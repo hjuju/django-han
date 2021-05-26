@@ -1,41 +1,39 @@
 from bs4 import BeautifulSoup
-from urllib.request import urlopen
+import requests
 
 
 class BugsMusic(object):
 
-    url = ''
+    url = 'https://music.bugs.co.kr/chart/track/realtime/total?'
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    class_name = []
 
-    def __str__(self):
-        return self.url
+    def set_url(self, detail):
+        self.url = requests.get(f'{self.url}{detail}', headers=self.headers).text
 
-# 벅스: https://music.bugs.co.kr/chart/track/realtime/total?wl_ref=M_contents_03_01
+    def get_ranking(self):
+        pass
 
-    @staticmethod
-    def scrap(url, class_name):
-        soup = BeautifulSoup(urlopen(url), 'lxml')
-        count = 0
-        print(f'----------------------{class_name} ranking-------------------------')
-        for i in soup.find_all(name='p', attrs=({"class": class_name[0]})): # "artist"
-            count += 1
-            print(f'{str(count)}위) {class_name}: {i.find("a").text}')
+    def insert_title_dict(self):
+        pass
 
     @staticmethod
     def main():
         bugs = BugsMusic()
         while 1:
-            menu = (input('0. 프로그램 종료\n1. URL 입력\n2. 음악 순위\n숫자입력: '))
+            menu = input('0-exit, 1-input time, 2-output,3. dictout')
             if menu == '0':
-                print('프로그램을 종료 합니다.')
                 break
             elif menu == '1':
-                bugs.url = input('URL 입력: ')
+                bugs.set_url(input('상세정보 입력')) # wl_ref=M_contents_03_01
             elif menu == '2':
-                url = input('URL 입력: ')
-                print(f'URL: {bugs}')
-                bugs.scrap(input(), "artist" or title: '))
+                bugs.class_name.append("artist")
+                bugs.class_name.append("title")
+                bugs.get_ranking()
+            elif menu == '3':
+                bugs.insert_title_dict()
             else:
-                print('잘못된 선택 입니다.')
+                print('Wrong Number')
                 continue
 
 
