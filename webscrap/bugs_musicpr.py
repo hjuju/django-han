@@ -30,9 +30,7 @@ class BugsMusic(object):
             self.dict[self.title_ls[i]] = self.artist_ls[i]
         '''
         # 방법: 2. enumerate
-        c = 0
         for i, j in enumerate(self.artist_ls):
-            c += 1
             self.dict[j] = self.title_ls[i]
         '''
         # 방법: 3. zip

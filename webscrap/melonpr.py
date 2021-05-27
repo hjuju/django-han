@@ -1,40 +1,38 @@
 import pandas as pd
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
+
 
 
 class Melon(object):
+
     url = 'https://www.melon.com/chart/index.htm?dayTime='
     headers = {'User-Agent': 'Mozilla/5.0'}
     class_name = []
     title_ls = []
     artist_ls = []
     dict = {}
-    df = None
 
     def set_url(self, time):
         self.url = requests.get(f'{self.url}{time}', headers=self.headers).text
 
     def get_ranking(self):
         soup = BeautifulSoup(self.url, 'lxml')
-        ls1 = soup.find_all("div", {"class": self.class_name[0]})
-        for i in ls1:
-            self.title_ls.append(i.find("a").text)
-        ls2 = soup.find_all("div", {"class": self.class_name[1]})
-        for i in ls2:
+        ls1 = soup.find_all("p", attrs={"class": self.class_name[0]})
+        for i, in ls1:
             self.artist_ls.append(i.find("a").text)
+        ls2 = soup.find_all("p", attrs={"class": self.artist_ls[1]})
+        for i in ls2:
+            self.title_ls.append(i.find("a").text)
 
     def insert_title_dict(self):
-        for i, j in zip(self.title_ls, self.artist_ls):
-            self.dict[i] = j
-        print(self.dict)
+        pd.DataFrame.from_dict(self.dict, )
 
     def dict_to_dataframe(self):
-        self.df = pd.DataFrame.from_dict(self.dict, orient='index')
+        pass
 
     def df_to_csv(self):
-        path = './data/melon.csv'
-        self.df.to_csv(path, sep=',', na_rep='NaN')
+        pass
 
     @staticmethod
     def main():
@@ -48,12 +46,13 @@ class Melon(object):
                          '5. save to csv\n'
                          '숫자입력: ')
             if menu == '0':
+                print('프로그램을 종료 합니다.')
                 break
             elif menu == '1':
-                melon.set_url(input('스크래핑할 날짜 입력'))  # '2021052511'
+                melon.set_url(input('날짜 입력: '))
             elif menu == '2':
-                melon.class_name.append('ellipsis rank01')
-                melon.class_name.append('ellipsis rank02')
+                melon.class_name.append("title")
+                melon.class_name.append("artist")
                 melon.get_ranking()
             elif menu == '3':
                 melon.insert_title_dict()
@@ -62,7 +61,7 @@ class Melon(object):
             elif menu == '5':
                 melon.df_to_csv()
             else:
-                print('Wrong number')
+                print('잘못 입력했습니다.')
                 continue
 
 
