@@ -20,8 +20,7 @@ class Controller(object):
         this.train = service.new_model(train)
         this.test = service.new_model(test)
         print(f'Train 의 Type 은 {type(this.train)} 이다.')
-        print(f'Train 의 column 은 {this.test.columns} 이다.')
-        print(f'Test 의 Type 은 {type(this.train)} 이다.')
+        print(f'Train 의 column 은 {this.train.columns} 이다.')
+        print(f'Test 의 Type 은 {type(this.test)} 이다.')
         print(f'Test 의 column 은 {this.test.columns} 이다.')
         return this
-
